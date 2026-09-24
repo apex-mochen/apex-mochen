@@ -16,7 +16,7 @@ AI Infra / LLM Inference 方向工程师。关注大模型推理引擎：调度�
 - **FlashInfer**（flashinfer-ai/flashinfer）：JIT 编译 flag 的 CUDA 版本门控
 - **LiteLLM**（BerriAI/litellm）：跨 provider 采样参数传递一致性
 
-> 详细的一个 bug 分析过程见：[给 vLLM 修了个崩引擎的竞态 bug](链接贴你发在掘金/知乎的那篇)
+> 详细的一个 bug 分析过程见：[给 vLLM 修了个崩引擎的竞态 bug](https://juejin.cn/post/7688885975998726180)
 
 ## 技术栈
 
