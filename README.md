@@ -17,8 +17,9 @@ AI Infra / LLM Inference 方向工程师。关注大模型推理引擎：调度�
 - **LiteLLM**（BerriAI/litellm）：跨 provider 采样参数传递一致性
 
 > 技术文章：
-> - [给 vLLM 修了个崩引擎的竞态 bug（调度器 underflow）](https://juejin.cn/post/7688885975998726180)
-> - [大模型流式输出里一个看不见的字符（parser 状态机丢 `</think>`）](https://juejin.cn/post/7688910933352939556)
+> - 给 vLLM 修了个崩引擎的问题（调度器 underflow）：[掘金](https://juejin.cn/post/7688885975998726180) · [知乎](https://zhuanlan.zhihu.com/p/2090576214847125367)
+> - 大模型流式输出里丢失的结束标签（parser 状态机）：[掘金](https://juejin.cn/post/7688910933352939556) · [知乎](https://zhuanlan.zhihu.com/p/2090577301230690831)
+> - vLLM 与 SGLang 并发实验：如何让性能数字可复现、可解释：[知乎](https://zhuanlan.zhihu.com/p/2090575637522265099)
 
 ## 技术栈
 
@@ -32,3 +33,4 @@ AI Infra / LLM Inference 方向工程师。关注大模型推理引擎：调度�
 一句话：让大模型在生产环境里**不崩、不悄悄丢数据、跨 provider 行为一致**。
 
 📫 可通过 GitHub issue / 邮件联系我
+
