@@ -1,6 +1,4 @@
-# 丁长亮 · apex-mochen
-
-湖北大学软件工程本科在读（2028 届），关注 **AI Infra / LLM Serving**，正在寻找大模型推理研发实习。
+# AI Infra / LLM Serving
 
 近期围绕 vLLM / SGLang 的 KV Cache、缓存生命周期和权重加载参与开源贡献，同时在单卡环境中实践推理服务部署与并发评测。
 
@@ -42,5 +40,4 @@
 
 Python · Linux / WSL · Git / GitHub · pytest / unittest。项目实践涉及 vLLM、SGLang、PyTorch 与 Redis，近期在具体贡献中阅读和修改 Rust TreeCore。
 
-联系：[2756823972@qq.com](mailto:2756823972@qq.com)
 
