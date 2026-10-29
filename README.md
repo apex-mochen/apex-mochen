@@ -1,11 +1,13 @@
 # LLM Serving / AI Infra
 
-关注大模型推理服务，近期主要参与 vLLM、SGLang 的缓存生命周期、状态索引与接口正确性修复。
+关注大模型推理服务，近期参与 vLLM、SGLang 的缓存生命周期、调度与接口正确性修复，以及 Mooncake 的 C++ 测试基础设施维护。
 
 ## 已合并的代表贡献
 
 | 项目 | 工作 |
 |---|---|
+| [Mooncake #4895](https://github.com/kvcache-ai/Mooncake/pull/4895) | 修复 session_tag_test 在 ASan 下的分配／释放不匹配：补齐 nothrow 与数组 new/delete 重载，统一 malloc/free 路径并保留分配计数；仅修改测试代码。 |
+| [vLLM #61976](https://github.com/vllm-project/vllm/pull/61976) | 修复优先级调度中的自抢占提前退出：继续调度后续运行请求，避免跳过高优先级请求；CPU 回归检查修复前后行为。 |
 | [vLLM #59790](https://github.com/vllm-project/vllm/pull/59790) | P2P KV 超时或中止时，等待 NIXL 传输终态后释放 pins 和发送 AbortAck；取消请求本身不作为停止证明；消费者超时释放另由 #61532 跟踪。 |
 | [vLLM #59962](https://github.com/vllm-project/vllm/pull/59962) | 修复 RecoverSSM 在整块边界选错状态槽的问题，统一 KDA 提交规划与 V2 后处理的索引语义。 |
 | [vLLM #59263](https://github.com/vllm-project/vllm/pull/59263) | 补齐 Batch Chat 的 reasoning 配置传递，修复关闭 thinking 后结构化输出约束失效的问题。 |
