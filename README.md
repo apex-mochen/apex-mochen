@@ -6,6 +6,7 @@
 
 | 项目 | 工作 |
 |---|---|
+| [Data-Juicer #1127](https://github.com/datajuicer/data-juicer/pull/1127) / [#1128](https://github.com/datajuicer/data-juicer/pull/1128) / [#1129](https://github.com/datajuicer/data-juicer/pull/1129) | 行频统计只分批读取哈希列；图像/视频去重按保留索引 select；Arrow null_count 判定无空值时跳过过滤，否则仅批量读取文本列，保留原有筛选语义。 |
 | [Data-Juicer #1119](https://github.com/datajuicer/data-juicer/pull/1119) | MinHash band 表只保留首个样本，碰撞时立即合并，省去逐桶 set 和二次遍历；迭代路径压缩修复降序 UID 长链的递归溢出，保留最小 UID 代表语义。 |
 | [Data-Juicer #1123](https://github.com/datajuicer/data-juicer/pull/1123) | 精确去重与 SimHash 去重只读取哈希列，计算保留索引后使用 select，避免逐行解码无关字段，保留首条记录与 tracer 行为。 |
 | [Data-Juicer #1125](https://github.com/datajuicer/data-juicer/pull/1125) | 四类字段选择器通过 iter_column 分批读取惰性列，避免一次持有整列解码对象；补充批次边界、子集顺序和空数据回归。 |
@@ -41,4 +42,3 @@
 - MiniMax M2 流式输出的结束标签：[掘金](https://juejin.cn/post/7688910933352939556) · [知乎](https://zhuanlan.zhihu.com/p/2090577301230690831)
 
 代码与实验有 AI 辅助，具体改动、验证范围和剩余限制见各 PR。
-
