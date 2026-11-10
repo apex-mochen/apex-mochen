@@ -1,44 +1,56 @@
 # LLM Serving / AI Infra
 
-关注大模型推理服务，近期参与 vLLM、SGLang 的缓存生命周期、调度与接口正确性修复，以及 Mooncake 的 C++ 测试基础设施维护。
+vLLM core contributor — **KV cache, prefix caching, KV events, P/D KV connectors**.
 
-## 已合并的代表贡献
+- **6 merged** vLLM core PRs
+- **45 reviews** on external vLLM PRs, **43** I would defend as substantive
+- Focus: cache lifecycle, prefix-cache correctness, connector pinning, and event ordering
 
-| 项目 | 工作 |
+## vLLM core — merged
+
+| PR | What changed |
 |---|---|
-| [Data-Juicer #1127](https://github.com/datajuicer/data-juicer/pull/1127) / [#1128](https://github.com/datajuicer/data-juicer/pull/1128) / [#1129](https://github.com/datajuicer/data-juicer/pull/1129) | 行频统计只分批读取哈希列；图像/视频去重按保留索引 select；Arrow null_count 判定无空值时跳过过滤，否则仅批量读取文本列，保留原有筛选语义。 |
-| [Data-Juicer #1119](https://github.com/datajuicer/data-juicer/pull/1119) | MinHash band 表只保留首个样本，碰撞时立即合并，省去逐桶 set 和二次遍历；迭代路径压缩修复降序 UID 长链的递归溢出，保留最小 UID 代表语义。 |
-| [Data-Juicer #1123](https://github.com/datajuicer/data-juicer/pull/1123) | 精确去重与 SimHash 去重只读取哈希列，计算保留索引后使用 select，避免逐行解码无关字段，保留首条记录与 tracer 行为。 |
-| [Data-Juicer #1125](https://github.com/datajuicer/data-juicer/pull/1125) | 四类字段选择器通过 iter_column 分批读取惰性列，避免一次持有整列解码对象；补充批次边界、子集顺序和空数据回归。 |
-| [Mooncake #4895](https://github.com/kvcache-ai/Mooncake/pull/4895) | 修复 session_tag_test 在 ASan 下的分配／释放不匹配：补齐 nothrow 与数组 new/delete 重载，统一 malloc/free 路径并保留分配计数；仅修改测试代码。 |
-| [vLLM #61976](https://github.com/vllm-project/vllm/pull/61976) | 修复优先级调度中的自抢占提前退出：继续调度后续运行请求，避免跳过高优先级请求；CPU 回归检查修复前后行为。 |
-| [vLLM #59790](https://github.com/vllm-project/vllm/pull/59790) | P2P KV 超时或中止时，等待 NIXL 传输终态后释放 pins 和发送 AbortAck；取消请求本身不作为停止证明；消费者超时释放另由 #61532 跟踪。 |
-| [vLLM #59962](https://github.com/vllm-project/vllm/pull/59962) | 修复 RecoverSSM 在整块边界选错状态槽的问题，统一 KDA 提交规划与 V2 后处理的索引语义。 |
-| [vLLM #59263](https://github.com/vllm-project/vllm/pull/59263) | 补齐 Batch Chat 的 reasoning 配置传递，修复关闭 thinking 后结构化输出约束失效的问题。 |
-| [vLLM #59959](https://github.com/vllm-project/vllm/pull/59959) | 修复 `LLM.score()` 修改调用方参数的问题，保持参数复用和显式冲突检查的行为。 |
-| [vLLM #59399](https://github.com/vllm-project/vllm/pull/59399) | 补充多模态参数优先级回归，验证请求覆盖时保留 `fps` 等同级配置。 |
-| [SGLang #42077](https://github.com/sgl-project/sglang/pull/42077) | 将 HiCache 无元数据缓存路径的全目录扫描改为目标文件检查，保留 KV/Mamba 命中规则。 |
-| [SGLang #40899](https://github.com/sgl-project/sglang/pull/40899) | 共同作者：收窄图像/音频路径读取的 OSError 捕获范围，保留 EMFILE 等服务端故障，补充回归测试；补丁由原作者 cherry-pick。 |
+| [#61976](https://github.com/vllm-project/vllm/pull/61976) | Priority scheduling: keep scheduling running requests after a priority self-preemption instead of exiting early |
+| [#59962](https://github.com/vllm-project/vllm/pull/59962) | RecoverSSM: choose the correct state slot at exact block boundaries; unify KDA commit planning and V2 post-processing indices |
+| [#59790](https://github.com/vllm-project/vllm/pull/59790) | KV offload P2P: hold store pins and AbortAck until NIXL transfers reach a terminal state |
+| [#59959](https://github.com/vllm-project/vllm/pull/59959) | `LLM.score()`: stop mutating caller-owned sampling params |
+| [#59263](https://github.com/vllm-project/vllm/pull/59263) | Batch Chat: forward the reasoning wiring so constrained output still works when thinking is off |
+| [#59399](https://github.com/vllm-project/vllm/pull/59399) | Multimodal: regression coverage for scoped processor kwargs precedence |
 
-## 在审工作
+## Selected reviews
 
-- [SGLang #42745](https://github.com/sgl-project/sglang/pull/42745)：按页拆出 SWA 窗口尾部，减少 Rust TreeCore 的过量锁定，保护 D2H 备份尚未完成的节点。
+These are reviews where the finding changed a decision, not just a comment.
 
-状态以对应 PR 为准。[本人发起的 PR](https://github.com/pulls?q=is%3Apr+author%3Aapex-mochen)
+- [#63936](https://github.com/vllm-project/vllm/pull/63936) — blocked merge on an unexplained **3/128 output mismatch** in NIXL/Mooncake early KV receive; asked for a deterministic root cause or a narrower gate before treating it as safe.
+- [#66523](https://github.com/vllm-project/vllm/pull/66523) — caught the extensible-KV warmup `commit(1, shrink=True)` edge; the author then escalated it to **block-outermost layout** and **DCP capture-table** contracts.
+- [#66502](https://github.com/vllm-project/vllm/pull/66502) — found the **zero-missing-page / full-prefix-hit** boundary in Mooncake HiSparse imports, where host registration or completion bookkeeping can run with no transfer.
+- [#66738](https://github.com/vllm-project/vllm/pull/66738) — found the **sticky prefill backoff cap**: one transient idle step can halve a request's chunk for its whole lifetime.
+- [#65132](https://github.com/vllm-project/vllm/pull/65132) — challenged a "no accuracy regression" claim when GPQA run 1 had **p=0.013**; asked for a third paired run or an equivalence interval.
 
-## 项目实践
+## Current work
+
+- [#64875](https://github.com/vllm-project/vllm/pull/64875) — EAGLE/no-draft-group and periodic-SWA prefix-cache fixes (open, CI green)
+- KV-event idle-reset fix (local, in preparation): publish `AllBlocksCleared` immediately after a successful prefix-cache reset instead of waiting for the next scheduler step
+- vLLM-Omni: serializer/connector work ([#9977](https://github.com/vllm-project/vllm-omni/pull/9977) merged)
+
+## Other merged contributions
+
+| Project | Work |
+|---|---|
+| [Data-Juicer #1119](https://github.com/datajuicer/data-juicer/pull/1119) / [#1123](https://github.com/datajuicer/data-juicer/pull/1123) / [#1125](https://github.com/datajuicer/data-juicer/pull/1125) / [#1127](https://github.com/datajuicer/data-juicer/pull/1127) / [#1128](https://github.com/datajuicer/data-juicer/pull/1128) / [#1129](https://github.com/datajuicer/data-juicer/pull/1129) | Dedup operators: read only hash columns, batch lazy columns, fix MinHash band retention and long-chain path compression; add boundary regressions |
+| [Mooncake #4895](https://github.com/kvcache-ai/Mooncake/pull/4895) | ASan allocation/deallocation mismatch in `session_tag_test`: align nothrow and array new/delete with malloc/free |
+| [SGLang #42077](https://github.com/sgl-project/sglang/pull/42077) | HiCache: replace a full-directory scan with a target-file check on the no-metadata path |
+| [SGLang #40899](https://github.com/sgl-project/sglang/pull/40899) | Co-author: narrow image/audio OSError handling so EMFILE and server faults stay visible |
+
+## Project
 
 **[LLM Serving Benchmark Lab](https://github.com/apex-mochen/llm-serving-benchmark-lab)**
 
-在同机、同 GPU、同模型条件下比较 vLLM / SGLang 的并发响应，保存逐请求数据、运行配置和 GPU 遥测。提供命令行工具、数据校验、FastAPI / SQLite 只读结果浏览器，支持请求时间线、原始文件与证据报告导出。采用 AI 辅助协作，本人参与服务运行与 SGLang 补跑；有限批次结果不外推稳态容量，trace 测量可信度仍在验证。
+Same host, same GPU, same model comparisons of vLLM / SGLang concurrency: per-request data, run config, GPU telemetry, FastAPI/SQLite result browser, and raw evidence export. AI-assisted; finite batches are not extrapolated to steady-state capacity, and trace measurement is still being validated.
 
-**推理服务接口正确性回归**
+## Technical notes
 
-本地 Frontend Regression Lab，检查 reasoning、JSON Schema、流式响应与工具调用的组合行为。用事件控制 Batch 会话乱序完成，检查结果和 usage 的会话归属，并通过故障注入检验断言。尚未发布独立仓库；批量乱序验证任务由本人指定，代码实现与测试由 Codex 完成。
+- vLLM scheduler underflow: [Juejin](https://juejin.cn/post/7688885975998726180) · [Zhihu](https://zhuanlan.zhihu.com/p/2090576214847125367)
+- MiniMax M2 streaming end tag: [Juejin](https://juejin.cn/post/7688910933352939556) · [Zhihu](https://zhuanlan.zhihu.com/p/2090577301230690831)
 
-## 技术复盘
-
-- vLLM 调度器 underflow：[掘金](https://juejin.cn/post/7688885975998726180) · [知乎](https://zhuanlan.zhihu.com/p/2090576214847125367)
-- MiniMax M2 流式输出的结束标签：[掘金](https://juejin.cn/post/7688910933352939556) · [知乎](https://zhuanlan.zhihu.com/p/2090577301230690831)
-
-代码与实验有 AI 辅助，具体改动、验证范围和剩余限制见各 PR。
+Code and experiments include AI assistance; each PR states the exact change, validation scope, and remaining limits.
