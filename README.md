@@ -3,7 +3,7 @@
 vLLM core contributor — **KV cache, prefix caching, KV events, P/D KV connectors**.
 
 - **6 merged** vLLM core PRs
-- **45 reviews** on external vLLM PRs, **43** I would defend as substantive
+- **51 reviews** on external vLLM PRs, **49** I would defend as substantive
 - Focus: cache lifecycle, prefix-cache correctness, connector pinning, and event ordering
 
 ## vLLM core — merged
@@ -26,10 +26,13 @@ These are reviews where the finding changed a decision, not just a comment.
 - [#66502](https://github.com/vllm-project/vllm/pull/66502) — found the **zero-missing-page / full-prefix-hit** boundary in Mooncake HiSparse imports, where host registration or completion bookkeeping can run with no transfer.
 - [#66738](https://github.com/vllm-project/vllm/pull/66738) — found the **sticky prefill backoff cap**: one transient idle step can halve a request's chunk for its whole lifetime.
 - [#65132](https://github.com/vllm-project/vllm/pull/65132) — challenged a "no accuracy regression" claim when GPQA run 1 had **p=0.013**; asked for a third paired run or an equivalence interval.
+- [#66595](https://github.com/vllm-project/vllm/pull/66595) — flagged an AIME25 exact-match drop (0.800 → 0.783) in a RecoverSSM deferred-commit PR and asked whether it was noise or a regression.
+- [#62278](https://github.com/vllm-project/vllm/pull/62278) — found the `F < A` / `F == A` boundary in the shared-prefix junction set used by SWA, Mamba and offloading.
 
 ## Current work
 
 - [#64875](https://github.com/vllm-project/vllm/pull/64875) — EAGLE/no-draft-group and periodic-SWA prefix-cache fixes (open, CI green)
+- [#66968](https://github.com/vllm-project/vllm/pull/66968) — publish `AllBlocksCleared` immediately after a successful prefix-cache reset (open, CI green)
 - KV-event idle-reset fix (local, in preparation): publish `AllBlocksCleared` immediately after a successful prefix-cache reset instead of waiting for the next scheduler step
 - vLLM-Omni: serializer/connector work ([#9977](https://github.com/vllm-project/vllm-omni/pull/9977) merged)
 
