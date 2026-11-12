@@ -3,7 +3,7 @@
 vLLM core contributor — **KV cache, prefix caching, KV events, P/D KV connectors**.
 
 - **6 merged** vLLM core PRs
-- **51 reviews** on external vLLM PRs, **49** I would defend as substantive
+- **52 reviews** on external vLLM PRs, **50** I would defend as substantive
 - Focus: cache lifecycle, prefix-cache correctness, connector pinning, and event ordering
 
 ## vLLM core — merged
@@ -28,6 +28,7 @@ These are reviews where the finding changed a decision, not just a comment.
 - [#65132](https://github.com/vllm-project/vllm/pull/65132) — challenged a "no accuracy regression" claim when GPQA run 1 had **p=0.013**; asked for a third paired run or an equivalence interval.
 - [#66595](https://github.com/vllm-project/vllm/pull/66595) — flagged an AIME25 exact-match drop (0.800 → 0.783) in a RecoverSSM deferred-commit PR and asked whether it was noise or a regression.
 - [#62278](https://github.com/vllm-project/vllm/pull/62278) — found the `F < A` / `F == A` boundary in the shared-prefix junction set used by SWA, Mamba and offloading.
+- [#66954](https://github.com/vllm-project/vllm/pull/66954) — challenged an SM100 warmup KV-shrink formula that had only GB200 evidence; asked for a CPU test of the target block count and its no-shrink/gate branches.
 
 ## Current work
 
