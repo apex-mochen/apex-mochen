@@ -22,20 +22,18 @@ vLLM core contributor — **KV cache, prefix caching, KV events, P/D KV connecto
 These are reviews where the finding changed a decision, not just a comment.
 
 - [#63936](https://github.com/vllm-project/vllm/pull/63936) — blocked merge on an unexplained **3/128 output mismatch** in NIXL/Mooncake early KV receive; asked for a deterministic root cause or a narrower gate before treating it as safe.
-- [#66523](https://github.com/vllm-project/vllm/pull/66523) — caught the extensible-KV warmup `commit(1, shrink=True)` edge; the author then escalated it to **block-outermost layout** and **DCP capture-table** contracts.
+- [#66523](https://github.com/vllm-project/vllm/pull/66523) — caught the extensible-KV warmup `commit(1, shrink=True)` edge; the author then escalated it to **block-outermost layout** and **DCP capture-table** contracts. Merged as `3319c629a1` on 2026-11-12.
 - [#66502](https://github.com/vllm-project/vllm/pull/66502) — found the **zero-missing-page / full-prefix-hit** boundary in Mooncake HiSparse imports, where host registration or completion bookkeeping can run with no transfer.
 - [#66738](https://github.com/vllm-project/vllm/pull/66738) — found the **sticky prefill backoff cap**: one transient idle step can halve a request's chunk for its whole lifetime.
 - [#65132](https://github.com/vllm-project/vllm/pull/65132) — challenged a "no accuracy regression" claim when GPQA run 1 had **p=0.013**; asked for a third paired run or an equivalence interval.
 - [#66595](https://github.com/vllm-project/vllm/pull/66595) — flagged an AIME25 exact-match drop (0.800 → 0.783) in a RecoverSSM deferred-commit PR and asked whether it was noise or a regression.
 - [#62278](https://github.com/vllm-project/vllm/pull/62278) — found the `F < A` / `F == A` boundary in the shared-prefix junction set used by SWA, Mamba and offloading.
-- [#66954](https://github.com/vllm-project/vllm/pull/66954) — challenged an SM100 warmup KV-shrink formula that had only GB200 evidence; asked for a CPU test of the target block count and its no-shrink/gate branches.
 - [#66903](https://github.com/vllm-project/vllm/pull/66903) — on a scheduler idle-group optimization, asked for a spy test proving the per-step calls are actually skipped, not only that correctness is unchanged.
 
 ## Current work
 
 - [#64875](https://github.com/vllm-project/vllm/pull/64875) — EAGLE/no-draft-group and periodic-SWA prefix-cache fixes (open, CI green)
-- [#66968](https://github.com/vllm-project/vllm/pull/66968) — publish `AllBlocksCleared` immediately after a successful prefix-cache reset (open, CI green)
-- KV-event idle-reset fix (local, in preparation): publish `AllBlocksCleared` immediately after a successful prefix-cache reset instead of waiting for the next scheduler step
+- [#66968](https://github.com/vllm-project/vllm/pull/66968) — publish `AllBlocksCleared` immediately after a successful prefix-cache reset (open, CI green); A/B on local RTX 4060 + vLLM 0.30 backport: baseline delivered the event only after the next request (12.174 s), patched delivered it 0.002309 s after reset while idle.
 - vLLM-Omni: serializer/connector work ([#9977](https://github.com/vllm-project/vllm-omni/pull/9977) merged)
 
 ## Other merged contributions
