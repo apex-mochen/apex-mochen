@@ -34,7 +34,9 @@ These are reviews where the finding changed a decision, not just a comment.
 
 - [#64875](https://github.com/vllm-project/vllm/pull/64875) — EAGLE/no-draft-group and periodic-SWA prefix-cache fixes (open, CI green)
 - [#66968](https://github.com/vllm-project/vllm/pull/66968) — publish `AllBlocksCleared` immediately after a successful prefix-cache reset (open, CI green); A/B on local RTX 4060 + vLLM 0.30 backport: baseline delivered the event only after the next request (12.174 s), patched delivered it 0.002309 s after reset while idle.
-- vLLM-Omni: serializer/connector work ([#9977](https://github.com/vllm-project/vllm-omni/pull/9977) merged)
+- vLLM-Omni: serializer/connector work ([#9977](https://github.com/vllm-project/vllm-omni/pull/9977) merged); [#10412](https://github.com/vllm-project/vllm-omni/pull/10412) resolves the headless NixlConnector `sender_host="auto"` metadata failure (#9357)
+- Mooncake: [#5059](https://github.com/kvcache-ai/Mooncake/pull/5059) fixes a stranded pending admission after dropping an abandoned TCP queue head
+- SGLang: [#42488](https://github.com/sgl-project/sglang/pull/42488) fixes HiCache eviction stopping after one failed unlink (approved)
 
 ## Other merged contributions
 
