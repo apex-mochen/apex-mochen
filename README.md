@@ -1,9 +1,12 @@
-# LLM Serving / AI Infra
+# LLM Data + Serving Systems
 
-vLLM core contributor — **KV cache, prefix caching, KV events, P/D KV connectors**.
+2028 届 · 湖北大学软件工程本科在读 · 目标：2027 暑期数据算法/数据工程实习
 
-- **6 merged** vLLM core PRs
-- **22 merged** Data-Juicer PRs (bounded-block memory + dedup)
+Foundation-model data and inference systems: dedup, decontamination, peak memory, and KV-cache lifecycle.
+
+- **22 merged** Data-Juicer PRs — MinHash/SimHash dedup, bounded-block memory, Ray BTS MinHash fold (1M tokens 3,959 → 75 MiB)
+- **6 merged** vLLM core PRs — KV cache, prefix caching, KV events
+- **llm-data-curation-lab** — 48 commits / 63 tests; streaming cleaning, MinHash/SimHash near-dedup, 13-gram decontamination, weighted mixing
 - **53 reviews** on external vLLM PRs, **51** I would defend as substantive
 - Focus: cache lifecycle, prefix-cache correctness, connector pinning, and event ordering
 
