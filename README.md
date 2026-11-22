@@ -3,6 +3,7 @@
 vLLM core contributor — **KV cache, prefix caching, KV events, P/D KV connectors**.
 
 - **6 merged** vLLM core PRs
+- **22 merged** Data-Juicer PRs (bounded-block memory + dedup)
 - **53 reviews** on external vLLM PRs, **51** I would defend as substantive
 - Focus: cache lifecycle, prefix-cache correctness, connector pinning, and event ordering
 
@@ -42,7 +43,7 @@ These are reviews where the finding changed a decision, not just a comment.
 
 | Project | Work |
 |---|---|
-| [Data-Juicer #1119](https://github.com/datajuicer/data-juicer/pull/1119) / [#1123](https://github.com/datajuicer/data-juicer/pull/1123) / [#1125](https://github.com/datajuicer/data-juicer/pull/1125) / [#1127](https://github.com/datajuicer/data-juicer/pull/1127) / [#1128](https://github.com/datajuicer/data-juicer/pull/1128) / [#1129](https://github.com/datajuicer/data-juicer/pull/1129) | Dedup operators: read only hash columns, batch lazy columns, fix MinHash band retention and long-chain path compression; add boundary regressions |
+| [Data-Juicer](https://github.com/datajuicer/data-juicer) — **22 merged** ([#1188](https://github.com/datajuicer/data-juicer/pull/1188), [#1189](https://github.com/datajuicer/data-juicer/pull/1189), [#1198](https://github.com/datajuicer/data-juicer/pull/1198), #1119/#1123/#1125/#1127/#1128/#1129, …) | Bounded-block memory: MinHash shingle fold (1M tokens RSS 345 → 268 MiB), word-count chunks (245 → 185 MiB), Ray BTS MinHash fold (3,959 → 75 MiB, −98.1%); dedup hash-column reads and boundary fixes |
 | [Mooncake #4895](https://github.com/kvcache-ai/Mooncake/pull/4895) | ASan allocation/deallocation mismatch in `session_tag_test`: align nothrow and array new/delete with malloc/free |
 | [SGLang #42077](https://github.com/sgl-project/sglang/pull/42077) | HiCache: replace a full-directory scan with a target-file check on the no-metadata path |
 | [SGLang #40899](https://github.com/sgl-project/sglang/pull/40899) | Co-author: narrow image/audio OSError handling so EMFILE and server faults stay visible |
