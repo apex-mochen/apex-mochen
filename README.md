@@ -1,7 +1,5 @@
 # LLM Data + Serving Systems
 
-2028 届 · 湖北大学软件工程本科在读 · 目标：2027 暑期数据算法/数据工程实习
-
 Foundation-model data and inference systems: dedup, decontamination, peak memory, and KV-cache lifecycle.
 
 - **22 merged** Data-Juicer PRs — MinHash/SimHash dedup, bounded-block memory, Ray BTS MinHash fold (1M tokens 3,959 → 75 MiB)
